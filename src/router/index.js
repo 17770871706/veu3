@@ -7,7 +7,7 @@ const router = createRouter({
 
     {
       path: '/',
-      redirect: '/home',    // 重定向到 '/home'
+      redirect: '/mine',    // 重定向到 '/home'
     },
     {
       path: '/home',
@@ -21,6 +21,14 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/mine',
+      name: 'mine',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/MineView.vue')
     }
   ]
 })
