@@ -103,9 +103,6 @@ import Renderc from '@/components/components/renderc.vue'
         renderc.value.expose22()
         })
 
-     
-
-
 </script>
 
 <style lang="scss" scoped>
