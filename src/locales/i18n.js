@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n'
 // 引入vue-i18n组件
 import ch from './zh-cn/zh-cn'
 import en from './en/en'
+import ja from './ja/ja'
 
 const i18n = createI18n({
     // legacy（布尔值，默认为 false）：指定是否使用传统的 Vue 2.x 风格的编译器。当为 false 时，使用 Vue 3.x 的编译器。
@@ -16,7 +17,8 @@ const i18n = createI18n({
     messages: {
         // 配置语言
         'zh-cn': ch,
-        'en': en
+        'en': en,
+        'ja': ja
     },
 
 })

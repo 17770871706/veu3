@@ -14,4 +14,7 @@ app.use(router)
 app.use(Antd)
 app.use(ElementPlus)
 app.use(i18n)
-app.mount('#app')
+const that = app.mount('#app')
+
+app.provide('$i18n', i18n);
+app.provide('$that', that);
