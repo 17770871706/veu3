@@ -5,9 +5,11 @@
       <button @click="renderComponentC">渲染组件C</button>
       <button @click="renderComponentD">渲染组件D</button>
       <button @click="renderComponentE">渲染组件E</button>
+      <transition name="el-zoom-in-top">
       <keep-alive >
             <component :is="currentComponent" ></component>
       </keep-alive>
+    </transition>
  </div>
 </template>
 <script setup>   

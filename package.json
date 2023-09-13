@@ -8,8 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@ant-design/icons-vue": "^6.1.0",
     "ant-design-vue": "^4.0.0-rc.6",
+    "axios": "^1.5.0",
+    "echarts": "^5.4.3",
     "element-plus": "^2.3.12",
     "less": "^4.2.0",
     "less-loader": "^11.1.3",

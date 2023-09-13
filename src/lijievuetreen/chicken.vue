@@ -2,14 +2,14 @@
   <div class="chicken" ref="chickenRef"></div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import * as echarts from "echarts";
 import china from "../../../public/map/china.json";
 import { onMounted, reactive, ref, watch } from "vue";
 import axios from "axios";
 
-let chickens: echarts.ECharts;
-const chickenRef = ref<HTMLDivElement | null>();
+let chickens = echarts.ECharts;
+const chickenRef = ref(null);
 
 const mapData = [
   { adcode: "620088", name: "甘肃省", value: 300 },
@@ -73,7 +73,7 @@ onMounted(() => {
   3、找到对应的json文件后，注册地图，同时更改options.series[0].map（这里因为监听了options的变化，否则的话需要执行chickens.setOption(options)）           mapData变化了，就用监听
   */
   chickens.on("click", (e) => {
-    const res = e.data as any;
+    const res = e.data;
     axios.get(`/map/${res.adcode}.json`).then((response) => {
       console.log(response);
       if (response.status === 200) {

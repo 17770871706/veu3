@@ -12,6 +12,7 @@
         <a-select-option value="ja">{{$t(`message.login.ri`)}}</a-select-option>
       </a-select>
     </div>
+    <transition name="el-fade-in-linear">
     <div>
       {{$t(`message.account`) }}
       <br>
@@ -23,6 +24,7 @@
       <br>
       {{$t(`message.login.btn`) }}
     </div>
+    </transition>
     <div>
       <a-button type="primary"        @click="showModal">{{$t(`message.login.model`)}}</a-button>
     </div>

@@ -50,7 +50,7 @@
       <div>
         <a-button type="primary" @click="showDrawer">点击查看图片</a-button>
         <a-drawer
-          v-model:visible="visible"
+          v-model:open="visible"
           class="custom-class"
           style="color: red"
           title="Basic Drawer"
