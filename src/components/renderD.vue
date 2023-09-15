@@ -36,6 +36,7 @@
 <script setup>
 import { onMounted,reactive,ref } from 'vue'
 import { ElMessage } from 'element-plus'
+// Mounted期间加载的方法
 const functions = ref({
   toggle: null,
   addMarker: null,
@@ -46,17 +47,23 @@ const functions = ref({
   huzhiqzd:null,    //这个是地图驾驶路线的获取
   quitNavigation:null, //清除导航方法
 })
+
+//获取当前位置
 const navweizhi = null
 navigator.geolocation.getCurrentPosition((e)=>{
     console.log(e,'当前的位置');
     navweizhi=[e.coords.longitude,e.coords.latitude]
 })
+
+// 测试数据...
 const gongsi = reactive([113.37749 , 22.98484])
 const fn = ()=>{
     gongsi[0]++
     gongsi[1]++
     functions.value.updateContent(gongsi)
 }
+
+
 //更新地理位置的方法
 const unpdata = (e)=>{
   if (!e) {
@@ -93,7 +100,7 @@ const generateRandomCoordinate = ()=>{
   return [lng, lat];
 }
 
-//根据经纬度绘制路线
+//根据经纬度绘制路线规划
 const qidian = ref('112.87148,26.43347')
 const zhongdian = ref('113.37666,22.97939 ')
 const huizhiluxian = ()=>{
@@ -106,7 +113,6 @@ const huizhiluxian = ()=>{
 
 //根据中文地址获取经纬度 
 const maptext = ref('')
-
 const textfn =async ()=>{
   if (!maptext.value) {
        return 
@@ -122,7 +128,6 @@ const textfn =async ()=>{
 }
 
 //根据中文起点终点来进行道路规划
-
 const qdianmaptext = ref('广州市')
 const zdianmaptext = ref('深圳市')
 const qdzdtextfn= async ()=>{

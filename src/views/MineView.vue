@@ -1,12 +1,12 @@
 <template>
  <div>
-      <button @click="displayComponentA">渲染组件A</button>
-      <button @click="displayComponentB">渲染组件B</button>
-      <button @click="renderComponentC">渲染组件C</button>
-      <button @click="renderComponentD">渲染组件D</button>
-      <button @click="renderComponentE">渲染组件E</button>
-      <button @click="renderComponentF">渲染组件E</button>
-      <button @click="renderComponentG">渲染组件E</button>
+      <button @click="displayComponentA">渲染组件A(国际化)</button>
+      <button @click="displayComponentB">渲染组件B(Echarts图表)</button>
+      <button @click="renderComponentC">渲染组件C(父子传值)</button>
+      <button @click="renderComponentD">渲染组件D(高德地图)</button>
+      <button @click="renderComponentE">渲染组件E(a-tbale&&原生table)</button>
+      <button @click="renderComponentF">渲染组件F</button>
+      <button @click="renderComponentG">渲染组件G</button>
       <transition name="el-zoom-in-top">
       <keep-alive >
             <component :is="currentComponent" ></component>
