@@ -1,6 +1,6 @@
 <template>
   <div>
-     <div style="display: flex;">
+    <div style="display: flex;">
         <div id="container" style="width: 700px;height: 400px;"></div>
         <div id="panel" style="height: 400px;overflow: auto;"></div>
     </div>
@@ -26,14 +26,16 @@
         起点：<el-input v-model="qdianmaptext" style="width: 200px;"></el-input>
         终点：<el-input v-model="zdianmaptext" style="width: 200px;"></el-input>
         <br> 
-        <el-button @click="textfn" style="width: 200px;">输入文字进行搜索</el-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <el-button @click="textfn" style="width: 200px;">输入地名进行搜索</el-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <el-button @click="qdzdtextfn">输入起点和终点名进行规划路线</el-button>
+        <el-button @click="functions.quitNavigation">清除导航路线</el-button>
       </div>
   </div>
 </template>
 
 <script setup>
 import { onMounted,reactive,ref } from 'vue'
+import { ElMessage } from 'element-plus'
 const functions = ref({
   toggle: null,
   addMarker: null,
@@ -41,7 +43,8 @@ const functions = ref({
   updateContent:null,
   setCenter:null,  //单独更新定位的方法
   clearMarker:null,
-  huzhiqzd:null    //这个是地图驾驶路线的获取
+  huzhiqzd:null,    //这个是地图驾驶路线的获取
+  quitNavigation:null, //清除导航方法
 })
 const navweizhi = null
 navigator.geolocation.getCurrentPosition((e)=>{
@@ -56,6 +59,9 @@ const fn = ()=>{
 }
 //更新地理位置的方法
 const unpdata = (e)=>{
+  if (!e) {
+    return
+  }
   functions.value.updateContent(e)
 }
 
@@ -101,62 +107,68 @@ const huizhiluxian = ()=>{
 //根据中文地址获取经纬度 
 const maptext = ref('')
 
-const textfn = ()=>{
+const textfn =async ()=>{
   if (!maptext.value) {
        return 
   }
 
-  let aaa =  titleold(maptext.value)
+  let aaa = await titleold(maptext.value)
+  console.log('await调用了titleold方法aaa--',aaa);
+  if (!aaa) {
+    ElMessage.error('获取地理编码失败');
+    return
+  }
   functions.value.setCenter(aaa)
-}
-
-const titleold = async (address)=>{
-// const address ="湖南省耒阳市大市乡三塘村10组"; // 输入的地名或地址
-const key = "616520c0be57cfeafc472cf64442ae71"; // 需要替换为你自己的密钥
-let lnglat = null
-await AMap.plugin('AMap.Geocoder', function() {
-  const geocoder = new AMap.Geocoder({
-    key: key // 配置地理编码服务的密钥
-  });
-
-  geocoder.getLocation(address, function(status, result) {
-    if (status === 'complete' && result.geocodes.length) {
-      const location = result.geocodes[0].location;
-      console.log("经度: " + location.lng);
-      console.log("纬度: " + location.lat);
-      // 并进行跳转
-      console.log([location.lng,location.lat]);
-      lnglat = [location.lng,location.lat]
-    } else {
-      console.log("获取地理编码失败");
-    }
-  });
-});
-
-// await Promise.resolve(); // 延迟到下一个事件循环
-
-return lnglat
-
 }
 
 //根据中文起点终点来进行道路规划
 
 const qdianmaptext = ref('广州市')
 const zdianmaptext = ref('深圳市')
-
 const qdzdtextfn= async ()=>{
     if (!qdianmaptext.value||!zdianmaptext.value) {
       alert('请输入起点和终点')
       return
     }
-    let qdian = titleold(qdianmaptext.value)
-    let zhong = titleold(zdianmaptext.value)
-    console.log(qdian,zhong)
-  
-    await Promise.resolve(); // 延迟到下一个事件循环
+    let qdian =  await titleold(qdianmaptext.value)
+    let zhong =  await titleold(zdianmaptext.value)
+    console.log('await调用了titleold方法,qdian--zhong',qdian,zhong)
+    if (!zhong||!qdian) {
+    ElMessage.error('获取地理编码失败');
+    return
+  }
     functions.value.huzhiqzd(qdian, zhong);  
 }
 
+// 中文转换的方法（需要调用）
+const titleold =  (address)=>{
+// const address ="湖南省耒阳市大市乡三塘村10组"; // 输入的地名或地址
+const key = "616520c0be57cfeafc472cf64442ae71"; // 需要替换为你自己的密钥
+let lnglat = null
+console.log('LngLat ------1');
+return new Promise((resolve)=>{
+  AMap.plugin('AMap.Geocoder', async function() {
+  const geocoder = new AMap.Geocoder({
+    key: key // 配置地理编码服务的密钥
+  });
+ await  geocoder.getLocation(address,function(status, result) {
+    if (status === 'complete' && result.geocodes.length) {
+      const location = result.geocodes[0].location;
+      console.log("经度: " + location.lng);
+      console.log("纬度: " + location.lat);
+      // 并进行跳转
+      console.log('LngLat --------2');
+      console.log([location.lng,location.lat]);
+      lnglat = [location.lng,location.lat]
+      resolve(lnglat)
+    } else {
+      console.log("获取地理编码失败");
+      resolve(null)
+    }
+  });
+});
+})
+}
 
 onMounted(()=>{
   const mapa = new AMap.Map('container', {
@@ -306,7 +318,10 @@ onMounted(()=>{
     });
     } 
     // functions.value.huzhiqzd(qidian,zhongdian)
-
+    // 清除路线导航
+    functions.value.quitNavigation = () => {
+      driving.clear();
+    }
 }) 
 </script>
  
