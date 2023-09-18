@@ -263,6 +263,20 @@ slot会在子组件里面出现
 3.可视化：echarts地图：首先下载echarts，创建实例，然后再获取数据，再配置地图
 
 4.调用摄像头
+<!--  MediaStream API -->
+1. renderF 暂停.pause();，播放.play();，
+ 关闭 ：video.value.srcObject = null;
+ 打开 ：
+ const videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+ video.value.srcObject = videoStream;
+
 5.canavas 和 3D技术
+<!-- tress.js -->
+
+
 6.上传文件，打印文件，七牛云
+完成。打印组件（vue3-print-nb）。 
+七牛云刚注册，还没操作...
+
+
 7.代理服务器怎么配（内网设置）

@@ -5,7 +5,7 @@
       <button @click="renderComponentC">渲染组件C(父子传值)</button>
       <button @click="renderComponentD">渲染组件D(高德地图)</button>
       <button @click="renderComponentE">渲染组件E(a-tbale&&原生table)</button>
-      <button @click="renderComponentF">渲染组件F</button>
+      <button @click="renderComponentF">渲染组件F(调用摄像头)</button>
       <button @click="renderComponentG">渲染组件G</button>
       <transition name="el-zoom-in-top">
       <keep-alive >
